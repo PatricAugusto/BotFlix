@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom'; 
+import api from '../api/api';
 import { AuthCard, Title, Form, Input, Button, SwitchText } from '../components/AuthStyles';
 
 const Register = () => {
@@ -15,14 +16,23 @@ const Register = () => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => { 
         e.preventDefault();
         
-        console.log("Dados de Cadastro:", formData);
-        
-        alert("Simulação de Cadastro concluída. Redirecionando para Login.");
+        try {
+            const response = await api.post('/auth/register', formData); 
 
-        navigate('/login'); 
+            console.log("Registro bem-sucedido:", response.data.message);
+            alert("Cadastro realizado com sucesso! Faça login.");
+            
+            navigate('/login');
+            
+        } catch (error) {
+            console.error("Erro no registro:", error.response || error);
+            
+            const errorMessage = error.response?.data?.message || "Erro ao tentar registrar. Tente novamente.";
+            alert(`Falha no Registro: ${errorMessage}`);
+        }
     };
 
     return (

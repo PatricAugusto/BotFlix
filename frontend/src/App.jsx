@@ -2,8 +2,9 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import styled from 'styled-components';
 
-const LoginPage = () => <h1>Login Page (a ser implementada)</h1>;
-const RegisterPage = () => <h1>Register Page (a ser implementada)</h1>;
+import LoginPage from './pages/Login';
+import RegisterPage from './pages/Register';
+
 const HomePage = () => <h1>Botflix Home (a ser implementada)</h1>;
 const NotFound = () => <h1>404 | Não Encontrado</h1>;
 
