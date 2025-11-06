@@ -1,0 +1,6 @@
+@Botflix.Api_HostAddress = http://localhost:5282
+
+GET {{Botflix.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
