@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom'; 
 import { AuthCard, Title, Form, Input, Button, SwitchText } from '../components/AuthStyles';
 
 const Register = () => {
+    const navigate = useNavigate(); 
+
     const [formData, setFormData] = useState({
         username: '',
         email: '',
@@ -17,7 +19,10 @@ const Register = () => {
         e.preventDefault();
         
         console.log("Dados de Cadastro:", formData);
-        alert("Simulação de Cadastro - Verifique o console.");
+        
+        alert("Simulação de Cadastro concluída. Redirecionando para Login.");
+
+        navigate('/login'); 
     };
 
     return (
