@@ -5,8 +5,8 @@ import styled from 'styled-components';
 
 import LoginPage from './pages/Login';
 import RegisterPage from './pages/Register';
+import HomePage from './pages/Home';
 
-const HomePage = () => <h1>Botflix Home (a ser implementada)</h1>;
 const NotFound = () => <h1>404 | Não Encontrado</h1>;
 
 const AppContainer = styled.div`
