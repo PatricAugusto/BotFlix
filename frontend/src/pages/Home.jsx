@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useAuth } from '../context/auth';
 import api from '../api/api';
+import MoodInput from '../components/MoodInput';
 
 const HomeContainer = styled.div`
   display: flex;
@@ -66,7 +67,11 @@ const Home = () => {
         Sair (Logout)
       </Button>
 
-      <h3>Teste de Rota Protegida C# (`/api/Movie`)</h3>
+      <div style={{ marginTop: '25px', width: '100%', display: 'flex', justifyContent: 'center' }}>
+        <MoodInput />
+      </div>
+
+      <h3 style={{ marginTop: '30px', borderTop: '1px solid #333', paddingTop: '16px' }}>Teste de Rota Protegida C# (`/api/Movie`)</h3>
       
       {loadingMovies && <p>Carregando sugestões...</p>}
       

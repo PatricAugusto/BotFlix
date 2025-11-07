@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Botflix.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3e35c96973108d19c14e9c5b045d111b131cfdb3")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4f70a8c9e915a90958b3aeeccd82cdf4d0c79807")]
 [assembly: System.Reflection.AssemblyProductAttribute("Botflix.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Botflix.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
