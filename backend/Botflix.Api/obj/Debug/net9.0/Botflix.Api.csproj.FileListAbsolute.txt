@@ -161,3 +161,6 @@ C:\Users\druid\OneDrive\Área de Trabalho\Work\Botflix\backend\Botflix.Api\bin\D
 C:\Users\druid\OneDrive\Área de Trabalho\Work\Botflix\backend\Botflix.Api\bin\Debug\net9.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 C:\Users\druid\OneDrive\Área de Trabalho\Work\Botflix\backend\Botflix.Api\bin\Debug\net9.0\Microsoft.IdentityModel.Tokens.dll
 C:\Users\druid\OneDrive\Área de Trabalho\Work\Botflix\backend\Botflix.Api\bin\Debug\net9.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\druid\OneDrive\Área de Trabalho\Work\Botflix\backend\Botflix.Api\bin\Debug\net9.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\druid\OneDrive\Área de Trabalho\Work\Botflix\backend\Botflix.Api\bin\Debug\net9.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\druid\OneDrive\Área de Trabalho\Work\Botflix\backend\Botflix.Api\bin\Debug\net9.0\Swashbuckle.AspNetCore.SwaggerUI.dll

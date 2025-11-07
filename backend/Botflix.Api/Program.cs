@@ -1,38 +1,33 @@
-using Botflix.Api.Data;
-using Microsoft.EntityFrameworkCore; 
-using System.Text; 
-using Microsoft.AspNetCore.Authentication.JwtBearer; 
+using System.Text;
+using Botflix.Api.Data; 
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 
-builder.Services.AddOpenApi();
-builder.Services.AddControllers();
-builder.Services.AddAuthorization();
+builder.Services.AddDbContext<BotflixDbContext>(options => 
+    options.UseSqlite(configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("CorsPolicy",
         policy =>
         {
-            policy.WithOrigins("http://localhost:5282") 
+            policy.WithOrigins("http://localhost:5173") 
                   .AllowAnyMethod()
                   .AllowAnyHeader();
         });
 });
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") 
-    ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+builder.Services.AddControllers();
 
-builder.Services.AddDbContext<BotflixDbContext>(options =>
-{
-    options.UseSqlite(connectionString);
-});
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(); 
 
-var jwtKey = configuration["JwtSettings:Secret"] ?? 
-             throw new InvalidOperationException("JwtSettings:Secret not found.");
-var key = Encoding.ASCII.GetBytes(jwtKey);
+builder.Services.AddAuthorization(); 
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -40,54 +35,38 @@ builder.Services.AddAuthentication(options =>
 })
 .AddJwtBearer(options =>
 {
-    options.RequireHttpsMetadata = false; 
-    options.SaveToken = true;
     options.TokenValidationParameters = new TokenValidationParameters
     {
-        ValidateIssuerSigningKey = true, 
-        IssuerSigningKey = new SymmetricSecurityKey(key), 
         ValidateIssuer = true,
-        ValidIssuer = configuration["JwtSettings:Issuer"], 
-        ValidateAudience = true, 
-        ValidAudience = configuration["JwtSettings:Audience"], 
+        ValidateAudience = true,
         ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = configuration["Jwt:Issuer"],
+        ValidAudience = configuration["Jwt:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"] ?? throw new InvalidOperationException("Jwt:Key não configurado.")))
     };
 });
 
+
 var app = builder.Build();
 
-app.UseAuthentication(); 
-app.UseAuthorization();
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<BotflixDbContext>(); 
+    dbContext.Database.Migrate();
+}
 
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+app.UseCors("CorsPolicy"); 
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+app.UseAuthentication(); 
+app.UseAuthorization(); 
 
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast");
+app.MapControllers();
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
