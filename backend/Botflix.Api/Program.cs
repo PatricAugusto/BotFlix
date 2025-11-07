@@ -1,5 +1,6 @@
 using System.Text;
-using Botflix.Api.Data; 
+using Botflix.Api.Data;
+using Botflix.Api.Services; 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -7,7 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 
-builder.Services.AddDbContext<BotflixDbContext>(options => 
+builder.Services.AddDbContext<BotflixDbContext>(options =>
     options.UseSqlite(configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddCors(options =>
@@ -22,9 +23,10 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddControllers();
-
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(); 
+
+builder.Services.AddScoped<IGeminiService, GeminiService>(); 
 
 builder.Services.AddAuthorization(); 
 
@@ -52,7 +54,7 @@ var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
 {
-    var dbContext = scope.ServiceProvider.GetRequiredService<BotflixDbContext>(); 
+    var dbContext = scope.ServiceProvider.GetRequiredService<BotflixDbContext>();
     dbContext.Database.Migrate();
 }
 
