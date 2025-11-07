@@ -1,5 +1,6 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
+import ProtectedRoute from './components/ProtectedRoute';
 import styled from 'styled-components';
 
 import LoginPage from './pages/Login';
@@ -22,7 +23,14 @@ function App() {
   return (
     <AppContainer>
       <Routes>
-        <Route path="/" element={<HomePage />} /> 
+        <Route 
+          path="/" 
+          element={
+            <ProtectedRoute>
+              <HomePage /> 
+            </ProtectedRoute>
+          } 
+        />
         
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
