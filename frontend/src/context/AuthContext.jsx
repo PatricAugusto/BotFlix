@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from '../api/api'; 
-import { AuthContext } from './auth';
+import { AuthContext } from './auth'; 
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -15,7 +15,6 @@ export const AuthProvider = ({ children }) => {
         const parsedUser = JSON.parse(userData);
         setUser(parsedUser);
         
-        api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       } catch (error) {
         console.error("Erro ao restaurar dados do usuário:", error);
         localStorage.clear(); 
@@ -30,10 +29,9 @@ export const AuthProvider = ({ children }) => {
       const { token, user: userData } = response.data;
       
       setUser(userData);
+      
       localStorage.setItem('botflix_token', token);
       localStorage.setItem('botflix_user', JSON.stringify(userData));
-
-      api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
       return true; 
     } catch (error) {
@@ -47,7 +45,7 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
     localStorage.removeItem('botflix_token');
     localStorage.removeItem('botflix_user');
-    delete api.defaults.headers.common['Authorization']; 
+    
   };
   
   const contextValue = {
